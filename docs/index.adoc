@@ -1,0 +1,73 @@
+= Architecture Decision Records (ADRs)
+
+:source-highlighter: rouge
+:toc:
+:toclevels: 3
+:toc-placement!:
+
+This document contains all Architecture Decision Records for the k8s-1m project.
+These ADRs document the key architectural decisions made to scale Kubernetes to 1 million nodes.
+
+toc::[]
+
+== Introduction
+
+The k8s-1m project is a research effort to scale Kubernetes to 1 million nodes.
+This requires making several non-standard architectural decisions around networking, state management, and scheduling.
+
+Each ADR follows this format:
+- *Status*: Proposal/Accepted/Deprecated/Superseded
+- *Context*: The problem or motivation
+- *Decision*: The chosen solution
+- *Consequences*: Trade-offs (positive, negative, neutral)
+- *Related Decisions*: Links to other ADRs
+- *References*: Links to code, documentation, external resources
+
+== ADR Index
+
+=== ADR-0001: Use IPv6 Exclusively for Cluster Networking
+
+link:adr/0001-use-ipv6-addressing.adoc[Read ADR-0001: Use IPv6 Exclusively]
+
+*Status*: Accepted
+
+*Summary*: Use IPv6 exclusively for all cluster networking in the k8s-1m project.
+
+*Key Trade-off*: Vast address space (2^64 per subnet) vs. IPv4 compatibility requirements.
+
+=== ADR-0002: Use Custom In-Memory etcd (mem_etcd) Instead of Standard etcd
+
+link:adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc[Read ADR-0002: Use mem_etcd]
+
+*Status*: Accepted
+
+*Summary*: Replace standard etcd with a custom in-memory implementation for ephemeral Kubernetes state.
+
+*Key Trade-off*: 20x+ write throughput vs. no durability across restarts.
+
+=== ADR-0003: Implement Distributed Scheduler Using Scatter-Gather Pattern
+
+link:adr/0003-implement-distributed-scheduler.adoc[Read ADR-0003: Distributed Scheduler]
+
+*Status*: Accepted
+
+*Summary*: Replace default kube-scheduler with a distributed scheduler using scatter-gather pattern.
+
+*Key Trade-off*: Near-linear scaling (1M pods in 60s) vs. increased system complexity.
+
+== Quick Reference
+
+| ADR | Title | Status | Key Benefit | Key Trade-off |
+|-----|-------|--------|------------|---------------|
+| link:adr/0001-use-ipv6-addressing.adoc[0001] | Use IPv6 Exclusively | Accepted | Vast address space | IPv4 compatibility |
+| link:adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc[0002] | Use mem_etcd | Accepted | 20x+ write throughput | No durability |
+| link:adr/0003-implement-distributed-scheduler.adoc[0003] | Distributed Scheduler | Accepted | 1M pods in 60s | Increased complexity |
+
+== Full ADR Document
+
+For a single document containing all ADRs, see link:adr/ADR-MASTER.adoc[ADR-MASTER.adoc].
+
+== Related Documentation
+
+- link:../README.adoc[Main README]
+- link:../RUNNING.adoc[Running Guide]
