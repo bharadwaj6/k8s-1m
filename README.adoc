@@ -1,17 +1,20 @@
 == Architecture Decision Records
 
 This project has made several non-standard architectural decisions to achieve 1 million node scale.
-These decisions are documented as Architecture Decision Records (ADRs) in the `docs/adr/` directory:
+These decisions are documented as Architecture Decision Records (ADRs) in the `docs/adr/` directory.
 
-*   [[ADR-0001]]: Use IPv6 Exclusively for Cluster Networking
+The ADRs are written in AsciiDoc format for proper rendering with Asciidoctor on GitHub Pages.
+View the complete collection at xref:docs/adr/ADR-MASTER.adoc[ADR-MASTER].
+
+*   xref:docs/adr/0001-use-ipv6-addressing.adoc[ADR-0001]: Use IPv6 Exclusively for Cluster Networking
     - Addresses the IP address exhaustion problem at massive scale
     - Uses IPv6's vast address space to eliminate address management complexity
 
-*   [[ADR-0002]]: Use Custom In-Memory etcd (mem_etcd) Instead of Standard etcd
+*   xref:docs/adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc[ADR-0002]: Use Custom In-Memory etcd (mem_etcd) Instead of Standard etcd
     - Replaces etcd with a memory-optimized version for ephemeral Kubernetes state
     - Achieves 20x+ write throughput by eliminating fsync overhead
 
-*   [[ADR-0003]]: Implement Distributed Scheduler Using Scatter-Gather Pattern
+*   xref:docs/adr/0003-implement-distributed-scheduler.adoc[ADR-0003]: Implement Distributed Scheduler Using Scatter-Gather Pattern
     - Parallelizes pod scheduling across multiple replicas
     - Achieves 1 million pods scheduled in 60 seconds
 
@@ -21,6 +24,6 @@ Each ADR follows the lightweight architecture decision record format, documentin
 - The consequences, including trade-offs (Consequences)
 - Related decisions and references to code/documentation
 
-See `docs/adr/` for the complete ADR collection and template.
+See xref:docs/adr/ADR-MASTER.adoc[ADR-MASTER.adoc] for the complete ADR collection.
 
 == Conclusion: How large can a Kubernetes cluster be?

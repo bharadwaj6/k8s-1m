@@ -1,18 +1,18 @@
-# ADR-0003: Implement Distributed Scheduler Using Scatter-Gather Pattern
+= ADR-0003: Implement Distributed Scheduler Using Scatter-Gather Pattern=
 
-## Status
+== Status
 Accepted
 
-## Context
+== Context
 The default Kubernetes scheduler (kube-scheduler) uses a single-threaded, serial approach to schedule pods. For a cluster with 1 million nodes, the scheduler must place pods across all nodes efficiently. With default settings, scheduling 1 million pods would take an impractical amount of time (hours or days) due to:
 - Serial processing of each pod scheduling request
 - O(n^2) complexity in some scheduling algorithms
 - Contention on shared locks and data structures
-- Limited horizontal scaling of the scheduler component
+- Limited horizontal scaling of the scheduler component=
 
 The k8s-1m project requires scheduling 1 million pods within 60 seconds to support batch workloads and rapid scaling scenarios.
 
-## Decision
+== Decision
 Replace the default kube-scheduler with a custom distributed scheduler (dist-scheduler) that:
 - Uses a scatter-gather pattern to parallelize scheduling work
 - Shards the scheduling problem across multiple scheduler replicas
@@ -20,31 +20,31 @@ Replace the default kube-scheduler with a custom distributed scheduler (dist-sch
 - Combines results from all replicas to produce the final scheduling decisions
 - Maintains API compatibility with the standard kube-scheduler
 
-## Consequences
+== Consequences=
 
-### Positive
-- **Near-linear scaling**: Scheduling throughput increases with the number of scheduler replicas
-- **Achieved target performance**: 1 million pods scheduled in approximately 60 seconds
-- **Maintained compatibility**: Preserves the same scheduling policies and extensibility points
-- **Fault tolerance**: Scheduler replicas can be restarted without losing scheduling work (pending pods return to queue)
-- **Resource efficiency**: Better utilization of available CPU cores for scheduling work
+=== Positive
+- *Near-linear scaling*: Scheduling throughput increases with the number of scheduler replicas
+- *Achieved target performance*: 1 million pods scheduled in approximately 60 seconds
+- *Maintained compatibility*: Preserves the same scheduling policies and extensibility points
+- *Fault tolerance*: Scheduler replicas can be restarted without losing scheduling work (pending pods return to queue)
+- *Resource efficiency*: Better utilization of available CPU cores for scheduling work=
 
-### Negative
-- **Increased system complexity**: More components to deploy, monitor, and troubleshoot
-- **Scheduling boundaries**: Pods scheduled by different replicas may not see each other's decisions during scheduling (mitigated by short scheduling cycles)
-- **Operational overhead**: Need to manage scheduler replica count based on workload
-- **Debugging complexity**: Tracing scheduling decisions across multiple replicas
+=== Negative
+- *Increased system complexity*: More components to deploy, monitor, and troubleshoot
+- *Scheduling boundaries*: Pods scheduled by different replicas may not see each other's decisions during scheduling (mitigated by short scheduling cycles)
+- *Operational overhead*: Need to manage scheduler replica count based on workload
+- *Debugging complexity*: Tracing scheduling decisions across multiple replicas=
 
-### Neutral
-- **Scheduling algorithm**: Core scheduling predicates and priorities remain unchanged
-- **API compatibility**: Same extension points and configuration as kube-scheduler
-- **Resource requests**: Similar memory/CPU footprint per scheduler replica
+=== Neutral
+- *Scheduling algorithm*: Core scheduling predicates and priorities remain unchanged
+- *API compatibility*: Same extension points and configuration as kube-scheduler
+- *Resource requests*: Similar memory/CPU footprint per scheduler replica=
 
-## Related Decisions
+== Related Decisions
 - ADR-0001: Use IPv6 exclusively for addressing (provides the network foundation)
 - ADR-0002: Use mem_etcd instead of standard etcd (provides the state storage foundation)
 
-## References
+== References
 - dist-scheduler/: Custom distributed scheduler implementation in Go
 - README.adoc: Scheduler design section detailing the scatter-gather approach and performance results
 - Kubernetes scheduler documentation: https://kubernetes.io/docs/concepts/scheduling-kubernetes-scheduler/

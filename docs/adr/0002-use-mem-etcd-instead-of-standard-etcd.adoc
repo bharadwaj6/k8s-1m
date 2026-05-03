@@ -1,46 +1,46 @@
-# ADR-0002: Use Custom In-Memory etcd (mem_etcd) Instead of Standard etcd
+= ADR-0002: Use Custom In-Memory etcd (mem_etcd) Instead of Standard etcd
 
-## Status
+== Status
 Accepted
 
-## Context
+== Context
 etcd is the distributed key-value store used by Kubernetes for storing all cluster state. In a 1 million node cluster, etcd becomes a significant bottleneck due to the high volume of read/write operations required to manage node, pod, and service objects.
 
 Standard etcd optimizes for durability and strong consistency, which involves fsync operations to disk on every commit. This limits write throughput to approximately 50,000 writes per second on typical hardware, which is insufficient for the expected load at 1 million node scale.
 
 For Kubernetes, many objects stored in etcd are ephemeral (e.g., pod status, endpoint slices, lease objects) and do not require durability across system restarts. Losing this ephemeral state would cause temporary inconsistency but not data loss or safety issues.
 
-## Decision
+== Decision
 Replace standard etcd with a custom in-memory etcd implementation (mem_etcd) that:
 - Eliminates fsync operations for improved write throughput
 - Stores data only in memory (no persistence to disk)
 - Implements only the subset of the etcd v3 API required by Kubernetes
-- Optimizes for read-heavy workloads with frequent updates to ephemeral objects
+- Optimizes for read-heavy workloads with frequent updates to ephemeral objects.
 
-## Consequences
+== Consequences
 
-### Positive
-- **Massively increased write throughput**: mem_etcd achieves over 1 million writes per second vs. ~50K for standard etcd
-- **Reduced latency**: Memory-only storage eliminates disk I/O latency
-- **Lower resource consumption**: No need for provisioning high-performance SSDs for etcd nodes
-- **Simplified deployment**: No complex etcd cluster backup/restore procedures needed for ephemeral state
+=== Positive
+- *Massively increased write throughput*: mem_etcd achieves over 1 million writes per second vs. ~50K for standard etcd
+- *Reduced latency*: Memory-only storage eliminates disk I/O latency
+- *Lower resource consumption*: No need for provisioning high-performance SSDs for etcd nodes
+- *Simplified deployment*: No complex etcd cluster backup/restore procedures needed for ephemeral state
 
-### Negative
-- **No durability**: All etcd state is lost on process restart or power failure
-- **Recovery time**: Cluster requires full reconciliation after restart (nodes must re-register, etc.)
-- **Limited applicability**: Only suitable for ephemeral Kubernetes state, not for persistent user data
-- **Operational differences**: Requires different monitoring and troubleshooting approaches
+=== Negative
+- *No durability*: All etcd state is lost on process restart or power failure
+- *Recovery time*: Cluster requires full reconciliation after restart (nodes must re-register, etc.)
+- *Limited applicability*: Only suitable for ephemeral Kubernetes state, not for persistent user data
+- *Operational differences*: Requires different monitoring and troubleshooting approaches
 
-### Neutral
-- **Kubernetes compatibility**: mem_etcd implements the required etcd v3 API subset
-- **Performance characteristics**: Read performance remains excellent (memory-based)
-- **Operational tooling**: Standard etcd tooling (etcdctl) remains compatible for read operations
+=== Neutral
+- *Kubernetes compatibility*: mem_etcd implements the required etcd v3 API subset
+- *Performance characteristics*: Read performance remains excellent (memory-based)
+- *Operational tooling*: Standard etcd tooling (etcdctl) remains compatible for read operations
 
-## Related Decisions
+== Related Decisions
 - ADR-0001: Use IPv6 exclusively for addressing (reduces networking complexity)
 - ADR-0003: Implement distributed scheduler (addresses another scaling bottleneck)
 
-## References
+== References
 - mem_etcd/: Custom etcd implementation in Rust
 - README.adoc: State management section detailing etcd bottlenecks and mem_etcd solution
 - etcd.io: etcd v3 API documentation
