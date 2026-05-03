@@ -37,8 +37,8 @@ Replace standard etcd with a custom in-memory etcd implementation (mem_etcd) tha
 - *Operational tooling*: Standard etcd tooling (etcdctl) remains compatible for read operations
 
 == Related Decisions
-- ADR-0001: Use IPv6 exclusively for addressing (reduces networking complexity)
-- ADR-0003: Implement distributed scheduler (addresses another scaling bottleneck)
+- xref:0001-use-ipv6-addressing.adoc[ADR-0001: Use IPv6 exclusively for addressing]
+- xref:0003-implement-distributed-scheduler.adoc[ADR-0003: Implement distributed scheduler]
 
 == References
 - mem_etcd/: Custom etcd implementation in Rust

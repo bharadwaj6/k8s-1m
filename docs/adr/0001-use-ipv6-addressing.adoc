@@ -38,8 +38,8 @@ Use IPv6 exclusively for all cluster networking in the k8s-1m project.
 - *Network policies*: Calico and other CNIs support IPv6 natively
 
 == Related Decisions
-- ADR-0002: Use mem_etcd instead of standard etcd (addresses etcd storage performance)
-- ADR-0003: Implement distributed scheduler (addresses scheduling performance at scale)
+- xref:0002-use-mem-etcd-instead-of-standard-etcd.adoc[ADR-0002: Use mem_etcd instead of standard etcd]
+- xref:0003-implement-distributed-scheduler.adoc[ADR-0003: Implement distributed scheduler]
 
 == References
 - README.adoc: Networking architecture section

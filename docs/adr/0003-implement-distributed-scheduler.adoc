@@ -41,8 +41,8 @@ Replace the default kube-scheduler with a custom distributed scheduler (dist-sch
 - *Resource requests*: Similar memory/CPU footprint per scheduler replica=
 
 == Related Decisions
-- ADR-0001: Use IPv6 exclusively for addressing (provides the network foundation)
-- ADR-0002: Use mem_etcd instead of standard etcd (provides the state storage foundation)
+- xref:0001-use-ipv6-addressing.adoc[ADR-0001: Use IPv6 exclusively for addressing]
+- xref:0002-use-mem-etcd-instead-of-standard-etcd.adoc[ADR-0002: Use mem_etcd instead of standard etcd]
 
 == References
 - dist-scheduler/: Custom distributed scheduler implementation in Go
