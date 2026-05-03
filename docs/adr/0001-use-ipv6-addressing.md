@@ -1,0 +1,48 @@
+# ADR-0001: Use IPv6 Exclusively for Cluster Networking
+
+## Status
+Accepted
+
+## Context
+The k8s-1m project aims to scale Kubernetes to 1 million nodes. Each node requires at least one IP address, and with additional IP addresses needed for pods, services, and other resources, the total IP address requirement exceeds what IPv4 can reasonably provide.
+
+Standard Kubernetes deployments typically use IPv4 addressing, but IPv4 address space is limited:
+- Total IPv4 address space: ~4.3 billion addresses
+- After accounting for reserved/private addresses: ~3.7 billion usable addresses
+- For 1 million nodes with conservative estimate of 10 IPs per node (node, pods, services): 10 million IPs needed
+- While technically possible with IPv4, address management becomes complex and wastes significant address space
+
+Additionally, managing 1 million IPv4 addresses in etcd creates significant storage and performance overhead.
+
+## Decision
+Use IPv6 exclusively for all cluster networking in the k8s-1m project.
+
+## Consequences
+
+### Positive
+- **Vast address space**: IPv6 provides 2^64 addresses per subnet, eliminating address scarcity concerns
+- **Simplified addressing**: /64 subnets per node provide more than enough addresses for node, pods, and services
+- **Reduced etcd storage**: IPv6 addresses are more efficient to store and index at scale
+- **Future-proof**: Aligns with industry movement toward IPv6 adoption
+- **Elimination of NAT complexity**: End-to-end IPv6 connectivity reduces network translation layers
+
+### Negative
+- **Infrastructure requirements**: Requires IPv6-enabled infrastructure and networking equipment
+- **Limited IPv4 compatibility**: Applications requiring IPv4 need translation mechanisms (NAT64/DNS64)
+- **Tooling compatibility**: Some tools may have incomplete IPv6 support
+- **Team expertise**: Requires upskilling on IPv6 networking concepts and troubleshooting
+
+### Neutral
+- **Application impact**: Most applications are agnostic to IP version when using DNS
+- **Service discovery**: Kubernetes service discovery works identically with IPv6
+- **Network policies**: Calico and other CNIs support IPv6 natively
+
+## Related Decisions
+- ADR-0002: Use mem_etcd instead of standard etcd (addresses etcd storage performance)
+- ADR-0003: Implement distributed scheduler (addresses scheduling performance at scale)
+
+## References
+- README.adoc: Networking architecture section
+- Terraform configuration: `terraform/` directory shows IPv6-only network provisioning
+- RFC 4291: IP Version 6 Addressing Architecture
+- RFC 4862: IPv6 Stateless Address Autoconfiguration
