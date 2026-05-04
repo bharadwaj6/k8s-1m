@@ -54,6 +54,8 @@ jobs:
       run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc -o _site/adr/0002-use-mem-etcd-instead-of-standard-etcd.html
     - name: Generate ADR-0003
       run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0003-implement-distributed-scheduler.adoc -o _site/adr/0003-implement-distributed-scheduler.html
+    - name: Generate ADR Template
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/template.adoc -o _site/adr/template.html
     - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v3
     - name: Deploy to GitHub Pages

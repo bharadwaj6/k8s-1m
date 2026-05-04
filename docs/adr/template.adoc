@@ -1,0 +1,31 @@
+= ADR-XXXX: [Title]
+
+:source-highlighter: rouge
+
+== Status
+[Proposed | Accepted | Deprecated | Superseded]
+
+== Context
+[What is the issue that we're seeing that is motivating this decision or change?]
+
+== Decision
+[What is the change that we're proposing and/or doing?]
+
+== Consequences
+
+=== Positive
+- [What are the positive outcomes of this decision?]
+
+=== Negative
+- [What are the negative outcomes of this decision?]
+
+=== Neutral
+- [What are the neutral outcomes of this decision?]
+
+== Related Decisions
+- xref:0001-use-ipv6-addressing.adoc[ADR-0001: Use IPv6 Exclusively]
+- xref:0002-use-mem-etcd-instead-of-standard-etcd.adoc[ADR-0002: Use mem_etcd]
+- xref:0003-implement-distributed-scheduler.adoc[ADR-0003: Implement distributed scheduler]
+
+== References
+- [Links to code, documentation, external resources]
