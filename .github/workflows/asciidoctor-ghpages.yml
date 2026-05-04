@@ -44,20 +44,20 @@ jobs:
       run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared README.adoc -o _site/index.html
     - name: Generate RUNNING
       run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared RUNNING.adoc -o _site/RUNNING.html
-    - name: Create adr directory
-      run: mkdir -p _site/adr
+    - name: Create docs/adr directory
+      run: mkdir -p _site/docs/adr
     - name: Generate ADR Index (Root)
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/index.adoc -o _site/adr/index.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/index.adoc -o _site/docs/adr/index.html
     - name: Generate ADR-0001
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0001-use-ipv6-addressing.adoc -o _site/adr/0001-use-ipv6-addressing.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0001-use-ipv6-addressing.adoc -o _site/docs/adr/0001-use-ipv6-addressing.html
     - name: Generate ADR-0002
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc -o _site/adr/0002-use-mem-etcd-instead-of-standard-etcd.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0002-use-mem-etcd-instead-of-standard-etcd.adoc -o _site/docs/adr/0002-use-mem-etcd-instead-of-standard-etcd.html
     - name: Generate ADR-0003
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0003-implement-distributed-scheduler.adoc -o _site/adr/0003-implement-distributed-scheduler.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/0003-implement-distributed-scheduler.adoc -o _site/docs/adr/0003-implement-distributed-scheduler.html
     - name: Generate ADR Template
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/template.adoc -o _site/adr/template.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/template.adoc -o _site/docs/adr/template.html
     - name: Generate ADR-MASTER
-      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/ADR-MASTER.adoc -o _site/adr/ADR-MASTER.html
+      run: bundle exec asciidoctor -r asciidoctor-diagram -a mermaid-puppeteer-config=.doc/puppeteer.config.json -a docinfodir=.doc -a docinfo=shared docs/adr/ADR-MASTER.adoc -o _site/docs/adr/ADR-MASTER.html
     - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v3
     - name: Deploy to GitHub Pages
